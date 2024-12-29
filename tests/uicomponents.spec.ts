@@ -1,4 +1,4 @@
-import { test } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 // UI components test
 
@@ -27,5 +27,14 @@ test.describe('Form Layout Page', () => {
 
         // Fill the email input field with a test email
         await usingTheGridEmailInput.fill('test@playwright.com');
+        await usingTheGridEmailInput.clear(); // Clear the input field
+        await usingTheGridEmailInput.type('test2@playwright.com', { delay: 500 }); // Type with delay
+
+        // Generic assertion
+        const inputValue = await usingTheGridEmailInput.inputValue();
+        expect(inputValue).toEqual('test2@playwright.com');
+
+        // Locator assertion
+        await expect(usingTheGridEmailInput).toHaveValue('test2@playwright.com');
     });
 });
