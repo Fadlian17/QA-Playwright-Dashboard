@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { get } from 'http';
 
 // UI components test
 
@@ -53,5 +54,27 @@ test.describe('Form Layout Page', () => {
         await option2Radio.check({ force: true });
         await expect(option1Radio).not.toBeChecked(); // Assert that 'Option 1' is not checked
         await expect(option2Radio).toBeChecked(); // Assert that 'Option 2' is checked
+    });
+
+
+    test('check box options', async ({ page }) => {
+        // Navigate to the 'Toastr' page under 'Modal & Overlays'
+        await page.getByText('Modal & Overlays').click();
+        await page.getByText('Toastr').click();
+    
+        // Uncheck the 'Hide on click' checkbox
+        const hideOnClickCheckbox = page.getByRole('checkbox', { name: 'Hide on click' });
+        await hideOnClickCheckbox.uncheck({ force: true });
+    
+        // Check the 'Prevent arising of duplicate toast' checkbox
+        const preventDuplicateToastCheckbox = page.getByRole('checkbox', { name: 'Prevent arising of duplicate toast' });
+        await preventDuplicateToastCheckbox.check({ force: true });
+    
+        // Get all checkboxes and ensure they are unchecked
+        const allCheckboxes = page.getByRole('checkbox');
+        for (const checkbox of await allCheckboxes.all()) {
+            await checkbox.uncheck({ force: true });
+            await expect(checkbox).not.toBeChecked(); // Assert that the checkbox is unchecked
+        }
     });
 });
