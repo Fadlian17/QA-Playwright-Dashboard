@@ -37,4 +37,21 @@ test.describe('Form Layout Page', () => {
         // Locator assertion
         await expect(usingTheGridEmailInput).toHaveValue('test2@playwright.com');
     });
+
+
+    test('radio buttons options', async ({ page }) => {
+        // Locate the 'Using The Grid' form card
+        const usingTheGridForm = page.locator('nb-card', { hasText: 'Using The Grid' });
+    
+        // Check 'Option 1' radio button and verify its status
+        const option1Radio = usingTheGridForm.getByRole('radio', { name: 'Option 1' });
+        await option1Radio.check({ force: true });
+        await expect(option1Radio).toBeChecked(); // Assert that 'Option 1' is checked
+    
+        // Check 'Option 2' radio button and verify the status of both options
+        const option2Radio = usingTheGridForm.getByRole('radio', { name: 'Option 2' });
+        await option2Radio.check({ force: true });
+        await expect(option1Radio).not.toBeChecked(); // Assert that 'Option 1' is not checked
+        await expect(option2Radio).toBeChecked(); // Assert that 'Option 2' is checked
+    });
 });
